@@ -8,6 +8,7 @@ export type Screen =
   | 'chaoswheel'
   | 'challenge'
   | 'scoreboard'
+  | 'ghostnetwork'
 
 export interface Player {
   id: string

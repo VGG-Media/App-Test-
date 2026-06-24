@@ -53,6 +53,14 @@ const GAMES = [
     glow: '#00ff88',
   },
   {
+    id: 'ghostnetwork' as Screen,
+    title: 'Ghost Network',
+    emoji: '👁️',
+    description: 'Kooperatives Mystery-Spiel',
+    gradient: 'linear-gradient(135deg, #001a00, #00ff41)',
+    glow: '#00ff41',
+  },
+  {
     id: 'scoreboard' as Screen,
     title: 'Scoreboard',
     emoji: '🏆',
@@ -164,9 +172,61 @@ export default function GameHub({ state, currentPlayer, onNavigate }: Props) {
         </motion.div>
       )}
 
+      {/* Ghost Network – Special Feature Card */}
+      <motion.button
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        whileHover={{ y: -4, scale: 1.01 }}
+        whileTap={{ scale: 0.97 }}
+        onClick={() => onNavigate('ghostnetwork')}
+        className="game-card w-full rounded-2xl text-left relative overflow-hidden mb-3"
+        style={{
+          background: '#000000',
+          border: '1px solid rgba(0,255,65,0.3)',
+          boxShadow: '0 0 30px rgba(0,255,65,0.1)',
+        }}
+      >
+        {/* Scanlines overlay */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.04]"
+          style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,65,0.5) 2px, rgba(0,255,65,0.5) 4px)' }}
+        />
+        <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, #00ff41, #00cc33)' }} />
+        <motion.div
+          className="absolute inset-0 opacity-5"
+          style={{ background: 'radial-gradient(circle at 80% 50%, #00ff41, transparent 60%)' }}
+          animate={{ opacity: [0.03, 0.08, 0.03] }}
+          transition={{ duration: 3, repeat: Infinity }}
+        />
+        <div className="relative z-10 p-4 flex items-center gap-4">
+          <motion.span
+            className="text-4xl"
+            animate={{ opacity: [0.6, 1, 0.6] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            👁️
+          </motion.span>
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-0.5">
+              <p className="font-mono font-black text-base" style={{ color: '#00ff41' }}>
+                GHOST NETWORK
+              </p>
+              <span className="font-mono text-xs px-1.5 py-0.5 rounded border"
+                style={{ color: '#00ff41', borderColor: 'rgba(0,255,65,0.4)', background: 'rgba(0,255,65,0.1)' }}>
+                NEU
+              </span>
+            </div>
+            <p className="font-mono text-xs" style={{ color: 'rgba(0,255,65,0.5)' }}>
+              Kooperatives Mystery • Vermisstenfall lösen • 5 Kapitel
+            </p>
+          </div>
+          <span className="font-mono text-xs" style={{ color: 'rgba(0,255,65,0.4)' }}>&gt;_</span>
+        </div>
+      </motion.button>
+
       {/* Game grid */}
       <div className="grid grid-cols-2 gap-3 flex-1">
-        {GAMES.map((game, idx) => (
+        {GAMES.filter(g => g.id !== 'ghostnetwork').map((game, idx) => (
           <motion.button
             key={game.id}
             initial={{ opacity: 0, y: 20 }}
@@ -183,18 +243,14 @@ export default function GameHub({ state, currentPlayer, onNavigate }: Props) {
               minHeight: game.id === 'scoreboard' ? 'auto' : '140px',
             }}
           >
-            {/* Gradient accent */}
             <div
               className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300"
-              style={{ background: `${game.gradient.replace('linear-gradient(135deg, ', 'linear-gradient(135deg, ').replace(')', '20)')}` }}
+              style={{ background: `${game.gradient.replace(')', '20)')}` }}
             />
-
-            {/* Top glow line */}
             <div
               className="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl"
               style={{ background: game.gradient }}
             />
-
             <div className="relative z-10 flex flex-col gap-2 h-full w-full">
               {game.id === 'scoreboard' ? (
                 <div className="flex items-center gap-3">
@@ -215,10 +271,7 @@ export default function GameHub({ state, currentPlayer, onNavigate }: Props) {
                 <>
                   <span className="text-3xl">{game.emoji}</span>
                   <div className="mt-auto">
-                    <p
-                      className="font-bold text-sm text-white leading-tight"
-                      style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-                    >
+                    <p className="font-bold text-sm text-white leading-tight" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
                       {game.title}
                     </p>
                     <p className="text-white/40 text-xs mt-1 leading-tight">{game.description}</p>

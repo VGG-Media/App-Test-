@@ -10,6 +10,7 @@ import ChaosWheel from './components/games/ChaosWheel'
 import HotTakes from './components/games/HotTakes'
 import Challenge from './components/games/Challenge'
 import Scoreboard from './components/Scoreboard'
+import GhostNetwork from './components/games/GhostNetwork'
 import ParticleBackground from './components/ui/ParticleBackground'
 
 const pageVariants = {
@@ -117,6 +118,8 @@ export default function App() {
         return <Challenge {...sharedProps} />
       case 'scoreboard':
         return <Scoreboard state={state} onNavigate={navigate} />
+      case 'ghostnetwork':
+        return <GhostNetwork {...sharedProps} />
       default:
         return <HomeScreen onNavigate={navigate} />
     }
