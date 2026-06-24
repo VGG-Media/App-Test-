@@ -293,15 +293,25 @@ export default function GhostNetwork({ state, onNavigate, onAddScore, onAddBadge
   // -- INTRO SCREEN --
   if (phase === 'intro') {
     return (
-      <div className="min-h-screen min-h-dvh flex flex-col items-center justify-center px-4 py-8"
+      <div className="min-h-screen min-h-dvh flex flex-col items-center justify-center px-4 py-8 relative overflow-hidden"
         style={{ background: '#000000', fontFamily: 'monospace' }}
       >
+        {/* Atmospheric background image */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://d8j0ntlcm91z4.cloudfront.net/user_33prHue8cxWc6vb333eItQ5DmSA/hf_20260624_135149_329ded7b-ba6c-4ba3-bc76-743b7d5b5e86.png"
+            alt=""
+            className="w-full h-full object-cover"
+            style={{ opacity: 0.18, filter: 'saturate(0.6) hue-rotate(80deg)' }}
+          />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.7) 100%)' }} />
+        </div>
         <Scanlines />
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.5 }}
-          className="w-full max-w-sm flex flex-col items-center gap-6 text-center"
+          className="relative z-10 w-full max-w-sm flex flex-col items-center gap-6 text-center"
         >
           {/* Logo */}
           <div className="relative">
@@ -387,6 +397,22 @@ export default function GhostNetwork({ state, onNavigate, onAddScore, onAddBadge
           <span className="font-mono text-xs px-2 py-1 rounded border" style={{ color: '#ff0040', borderColor: '#ff004040', background: '#ff004010' }}>
             LIVE
           </span>
+        </div>
+
+        {/* Surveillance feed image */}
+        <div className="relative rounded-xl overflow-hidden mb-4" style={{ border: '1px solid rgba(0,255,65,0.25)' }}>
+          <img
+            src="https://d8j0ntlcm91z4.cloudfront.net/user_33prHue8cxWc6vb333eItQ5DmSA/hf_20260624_135449_4931f41a-0422-45c0-adac-1b9403a7cbc2.png"
+            alt="Surveillance feed"
+            className="w-full object-cover"
+            style={{ maxHeight: '140px', filter: 'saturate(0.4) brightness(0.7)' }}
+          />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.8) 100%)' }} />
+          <div className="absolute top-2 left-2 flex items-center gap-1.5">
+            <motion.div className="w-2 h-2 rounded-full bg-red-500" animate={{ opacity: [1, 0.2, 1] }} transition={{ duration: 1, repeat: Infinity }} />
+            <span className="font-mono text-xs" style={{ color: 'rgba(0,255,65,0.7)' }}>CAM_04 // STADTMITTE</span>
+          </div>
+          <div className="absolute bottom-2 right-2 font-mono text-xs" style={{ color: 'rgba(0,255,65,0.5)' }}>REC ●</div>
         </div>
 
         {/* Terminal window */}
@@ -516,6 +542,22 @@ export default function GhostNetwork({ state, onNavigate, onAddScore, onAddBadge
               <p className="font-mono text-xs mb-3" style={{ color: 'rgba(0,255,65,0.5)' }}>
                 &gt; BEWEISDATEI ENTSCHLÜSSELT:
               </p>
+
+              {/* Evidence photo */}
+              <div className="relative rounded-xl overflow-hidden mb-3" style={{ border: '1px solid rgba(255,106,0,0.3)' }}>
+                <img
+                  src="https://d8j0ntlcm91z4.cloudfront.net/user_33prHue8cxWc6vb333eItQ5DmSA/hf_20260624_135445_4d07e07d-ff1f-484e-9e07-5a11c3d8f27f.png"
+                  alt="Evidence files"
+                  className="w-full object-cover"
+                  style={{ maxHeight: '130px', filter: 'saturate(0.5) brightness(0.75)' }}
+                />
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.85) 100%)' }} />
+                <div className="absolute top-2 left-2 font-mono text-xs px-2 py-0.5 rounded" style={{ background: 'rgba(255,106,0,0.2)', border: '1px solid rgba(255,106,0,0.4)', color: '#ff6a00' }}>
+                  ⚠ CLASSIFIED
+                </div>
+                <div className="absolute bottom-2 right-2 font-mono text-xs" style={{ color: 'rgba(255,106,0,0.6)' }}>FILE_{chapter.id}.enc</div>
+              </div>
+
               <EvidenceCard evidence={chapter.evidence} />
 
               <div className="mt-4 p-4 rounded-xl" style={{ background: 'rgba(255,230,0,0.05)', border: '1px solid rgba(255,230,0,0.2)' }}>
