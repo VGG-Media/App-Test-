@@ -493,7 +493,7 @@ export default function GhostNetwork({ state, onNavigate, onAddScore, onAddBadge
                 )}
                 <motion.button
                   whileTap={{ scale: 0.96 }}
-                  onClick={() => chapterDone && setEvidenceOpen(true) && setPhase('evidence')}
+                  onClick={() => { if (chapterDone) { setEvidenceOpen(true); setPhase('evidence') } }}
                   className="flex-1 py-4 rounded-xl font-mono font-bold text-black"
                   style={{
                     background: chapterDone ? '#00ff41' : 'rgba(0,255,65,0.1)',
