@@ -241,6 +241,23 @@ export default function GhostNetwork({ state, onNavigate, onAddScore, onAddBadge
     ? false
     : state.players.every(p => progress.playerVotes[p.id] !== undefined)
 
+  const applyChoice = useCallback((winnerChoice: Choice) => {
+    if (!chapter) return
+    setVoteResult({ choice: winnerChoice, tally: progress.playerVotes })
+    setProgress(p => ({
+      ...p,
+      justiceScore: p.justiceScore + winnerChoice.justicePoints,
+      tensionLevel: p.tensionLevel + winnerChoice.tensionPoints + chapter.tensionDelta,
+      decisions: [...p.decisions, winnerChoice.id],
+      playerVotes: {},
+    }))
+    setPhase('reveal')
+    state.players.forEach(p => {
+      if (winnerChoice.justicePoints >= 4) onAddBadge(p.id, '⚖️')
+      if (winnerChoice.tensionPoints >= 4) onAddBadge(p.id, '💀')
+    })
+  }, [chapter, progress.playerVotes, state.players, onAddBadge])
+
   const confirmVote = useCallback(() => {
     if (!allVoted || !chapter) return
     const votes = progress.playerVotes
@@ -248,23 +265,8 @@ export default function GhostNetwork({ state, onNavigate, onAddScore, onAddBadge
     Object.values(votes).forEach(v => { tally[v] = (tally[v] || 0) + 1 })
     const winnerChoiceId = Object.entries(tally).sort((a, b) => b[1] - a[1])[0][0]
     const winnerChoice = chapter.choices.find(c => c.id === winnerChoiceId)!
-
-    setVoteResult({ choice: winnerChoice, tally: votes })
-    setProgress(p => ({
-      ...p,
-      justiceScore: p.justiceScore + winnerChoice.justicePoints,
-      tensionLevel: p.tensionLevel + winnerChoice.tensionPoints + chapter.tensionDelta,
-      decisions: [...p.decisions, winnerChoiceId],
-      playerVotes: {},
-    }))
-    setPhase('reveal')
-
-    // Award badges
-    state.players.forEach(p => {
-      if (winnerChoice.justicePoints >= 4) onAddBadge(p.id, '⚖️')
-      if (winnerChoice.tensionPoints >= 4) onAddBadge(p.id, '💀')
-    })
-  }, [allVoted, chapter, progress.playerVotes, state.players, onAddBadge])
+    applyChoice(winnerChoice)
+  }, [allVoted, chapter, progress.playerVotes, applyChoice])
 
   const goNextChapter = useCallback(() => {
     const next = progress.chapterIndex + 1
@@ -552,55 +554,73 @@ export default function GhostNetwork({ state, onNavigate, onAddScore, onAddBadge
                   >
                     <div className="flex items-start gap-3 mb-3">
                       <span className="text-2xl">{choice.emoji}</span>
-                      <div>
+                      <div className="flex-1">
                         <p className="font-mono font-bold text-sm" style={{ color: '#00ff41' }}>{choice.label}</p>
                         <p className="font-mono text-xs mt-0.5" style={{ color: 'rgba(0,255,65,0.5)' }}>{choice.subtext}</p>
                       </div>
                     </div>
-                    <div className="flex flex-wrap gap-2">
-                      {state.players.map(player => {
-                        const voted = progress.playerVotes[player.id] === choice.id
-                        return (
-                          <motion.button
-                            key={player.id}
-                            whileTap={{ scale: 0.9 }}
-                            onClick={() => voteForChoice(player.id, choice.id)}
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-mono text-xs transition-all"
-                            style={{
-                              background: voted ? `${player.color}30` : 'rgba(0,255,65,0.05)',
-                              border: voted ? `1px solid ${player.color}80` : '1px solid rgba(0,255,65,0.15)',
-                              color: voted ? player.color : 'rgba(0,255,65,0.5)',
-                              boxShadow: voted ? `0 0 10px ${player.color}40` : 'none',
-                            }}
-                          >
-                            <span>{player.emoji}</span>
-                            <span>{player.name}</span>
-                            {voted && <span>✓</span>}
-                          </motion.button>
-                        )
-                      })}
-                    </div>
+
+                    {state.players.length === 0 ? (
+                      <motion.button
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => applyChoice(choice)}
+                        className="w-full py-2.5 rounded-xl font-mono font-bold text-xs"
+                        style={{
+                          background: 'rgba(0,255,65,0.12)',
+                          border: '1px solid rgba(0,255,65,0.35)',
+                          color: '#00ff41',
+                        }}
+                      >
+                        &gt; GRUPPE WÄHLT DAS_
+                      </motion.button>
+                    ) : (
+                      <div className="flex flex-wrap gap-2">
+                        {state.players.map(player => {
+                          const voted = progress.playerVotes[player.id] === choice.id
+                          return (
+                            <motion.button
+                              key={player.id}
+                              whileTap={{ scale: 0.9 }}
+                              onClick={() => voteForChoice(player.id, choice.id)}
+                              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-mono text-xs transition-all"
+                              style={{
+                                background: voted ? `${player.color}30` : 'rgba(0,255,65,0.05)',
+                                border: voted ? `1px solid ${player.color}80` : '1px solid rgba(0,255,65,0.15)',
+                                color: voted ? player.color : 'rgba(0,255,65,0.5)',
+                                boxShadow: voted ? `0 0 10px ${player.color}40` : 'none',
+                              }}
+                            >
+                              <span>{player.emoji}</span>
+                              <span>{player.name}</span>
+                              {voted && <span>✓</span>}
+                            </motion.button>
+                          )
+                        })}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
 
-              <motion.button
-                whileTap={{ scale: 0.97 }}
-                onClick={confirmVote}
-                disabled={!allVoted}
-                className="py-4 rounded-xl font-mono font-bold text-black"
-                style={{
-                  background: allVoted ? '#00ff41' : 'rgba(0,255,65,0.1)',
-                  color: allVoted ? '#000' : 'rgba(0,255,65,0.3)',
-                  boxShadow: allVoted ? '0 0 20px rgba(0,255,65,0.4)' : 'none',
-                  opacity: allVoted ? 1 : 0.6,
-                }}
-              >
-                {allVoted
-                  ? '> ENTSCHEIDUNG BESTÄTIGEN_'
-                  : `> WARTET AUF ${state.players.length - Object.keys(progress.playerVotes).length} STIMME(N)...`
-                }
-              </motion.button>
+              {state.players.length > 0 && (
+                <motion.button
+                  whileTap={{ scale: 0.97 }}
+                  onClick={confirmVote}
+                  disabled={!allVoted}
+                  className="py-4 rounded-xl font-mono font-bold text-black"
+                  style={{
+                    background: allVoted ? '#00ff41' : 'rgba(0,255,65,0.1)',
+                    color: allVoted ? '#000' : 'rgba(0,255,65,0.3)',
+                    boxShadow: allVoted ? '0 0 20px rgba(0,255,65,0.4)' : 'none',
+                    opacity: allVoted ? 1 : 0.6,
+                  }}
+                >
+                  {allVoted
+                    ? '> ENTSCHEIDUNG BESTÄTIGEN_'
+                    : `> WARTET AUF ${state.players.length - Object.keys(progress.playerVotes).length} STIMME(N)...`
+                  }
+                </motion.button>
+              )}
             </motion.div>
           )}
 
