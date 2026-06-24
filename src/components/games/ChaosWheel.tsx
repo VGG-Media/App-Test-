@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { GameState, Screen, Player } from '../../types'
 
@@ -74,7 +74,7 @@ function SpinWheelSVG({
       {/* Outer ring */}
       <circle cx={cx} cy={cy} r={radius + 8} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="2" />
 
-      <g transform={`rotate(${rotation}, ${cx}, ${cy})`}>
+      <g style={{ transformOrigin: `${cx}px ${cy}px`, transform: `rotate(${rotation}deg)`, transition: `transform 3s cubic-bezier(0.17, 0.67, 0.12, 0.99)` }}>
         {slices.map(({ player, d, tx, ty, midAngle }) => (
           <g key={player.id}>
             <path
@@ -111,8 +111,6 @@ export default function ChaosWheel({ state, onNavigate, onSetCurrentPlayer, onAd
   const [selectedPlayerIdx, setSelectedPlayerIdx] = useState<number | null>(null)
   const [selectedGame, setSelectedGame] = useState<typeof WHEEL_GAMES[0] | null>(null)
   const [phase, setPhase] = useState<'idle' | 'spinning' | 'playerResult' | 'gameResult'>('idle')
-  const spinCountRef = useRef(0)
-
   const { players } = state
 
   const spinWheel = useCallback(() => {

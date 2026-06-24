@@ -221,7 +221,6 @@ export default function GhostNetwork({ state, onNavigate, onAddScore, onAddBadge
     decisions: [],
     playerVotes: {},
   })
-  const [evidenceOpen, setEvidenceOpen] = useState(false)
   const [voteResult, setVoteResult] = useState<{ choice: Choice; tally: Record<string, string> } | null>(null)
   const [endingKey, setEndingKey] = useState<string>('')
 
@@ -285,7 +284,6 @@ export default function GhostNetwork({ state, onNavigate, onAddScore, onAddBadge
     } else {
       setProgress(p => ({ ...p, chapterIndex: next, playerVotes: {} }))
       setVoteResult(null)
-      setEvidenceOpen(false)
       setPhase('chapter')
     }
   }, [progress, state.players, onAddScore, onAddBadge])
@@ -493,7 +491,7 @@ export default function GhostNetwork({ state, onNavigate, onAddScore, onAddBadge
                 )}
                 <motion.button
                   whileTap={{ scale: 0.96 }}
-                  onClick={() => { if (chapterDone) { setEvidenceOpen(true); setPhase('evidence') } }}
+                  onClick={() => { if (chapterDone) { setPhase('evidence') } }}
                   className="flex-1 py-4 rounded-xl font-mono font-bold text-black"
                   style={{
                     background: chapterDone ? '#00ff41' : 'rgba(0,255,65,0.1)',

@@ -51,7 +51,8 @@ export default function TruthOrDare({ state, currentPlayer, onNavigate, onNextPl
 
   const handleSkip = useCallback(() => {
     setSkipped(true)
-  }, [])
+    if (currentPlayer) onAddScore(currentPlayer.id, -5)
+  }, [currentPlayer, onAddScore])
 
   const handleNext = useCallback(() => {
     setChoice('none')

@@ -20,9 +20,8 @@ export default function NeverHaveIEver({ state, onNavigate, onAddDrink }: Props)
   const [roundDone, setRoundDone] = useState(false)
   const [totalRounds, setTotalRounds] = useState(0)
 
-  const currentCard = neverHaveIEver.filter(c => c.level <= state.chaosLevel)[cardIndex % neverHaveIEver.filter(c => c.level <= state.chaosLevel).length]
-
   const availableCards = neverHaveIEver.filter(c => c.level <= state.chaosLevel)
+  const currentCard = availableCards[cardIndex % availableCards.length]
 
   const toggleDrink = useCallback((playerId: string) => {
     setPlayerDrinks(prev => ({ ...prev, [playerId]: !prev[playerId] }))

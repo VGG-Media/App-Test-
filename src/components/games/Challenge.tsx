@@ -187,7 +187,7 @@ export default function Challenge({ state, onNavigate, onAddScore }: Props) {
       </AnimatePresence>
 
       {/* Winner selection */}
-      {revealed && !roundDone && (timeLeft === 0 || !timerActive) && (
+      {revealed && !roundDone && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
