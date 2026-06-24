@@ -19,7 +19,9 @@ interface Props {
   onAddBadge: (id: string, badge: string) => void
 }
 
-type Phase = 'intro' | 'briefing' | 'chapter' | 'evidence' | 'voting' | 'reveal' | 'ending'
+type Phase = 'cinematic' | 'intro' | 'briefing' | 'chapter' | 'evidence' | 'voting' | 'reveal' | 'ending'
+
+const INTRO_VIDEO_URL = 'https://d8j0ntlcm91z4.cloudfront.net/user_33prHue8cxWc6vb333eItQ5DmSA/hf_20260624_200126_528bba8b-2fd1-48cc-a2a8-9daeea56e7bd.mp4'
 
 interface GameProgress {
   chapterIndex: number
@@ -213,7 +215,7 @@ function TensionMeter({ level }: { level: number }) {
 
 // --- Main component ---
 export default function GhostNetwork({ state, onNavigate, onAddScore, onAddBadge }: Props) {
-  const [phase, setPhase] = useState<Phase>('intro')
+  const [phase, setPhase] = useState<Phase>('cinematic')
   const [progress, setProgress] = useState<GameProgress>({
     chapterIndex: 0,
     justiceScore: 0,
@@ -289,6 +291,42 @@ export default function GhostNetwork({ state, onNavigate, onAddScore, onAddBadge
       setPhase('chapter')
     }
   }, [progress, state.players, onAddScore, onAddBadge])
+
+  // -- CINEMATIC INTRO --
+  if (phase === 'cinematic') {
+    return (
+      <div className="min-h-screen min-h-dvh relative overflow-hidden bg-black flex items-center justify-center">
+        <video
+          src={INTRO_VIDEO_URL}
+          autoPlay
+          muted={false}
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          onEnded={() => setPhase('intro')}
+        />
+        {/* Tap anywhere to skip */}
+        <button
+          onClick={() => setPhase('intro')}
+          className="absolute inset-0 w-full h-full z-10"
+          aria-label="Skip intro"
+        />
+        {/* Skip label */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5 }}
+          className="absolute bottom-8 right-6 z-20 pointer-events-none"
+        >
+          <span
+            className="font-mono text-xs px-3 py-1.5 rounded-lg"
+            style={{ background: 'rgba(0,0,0,0.5)', color: 'rgba(0,255,65,0.6)', border: '1px solid rgba(0,255,65,0.2)' }}
+          >
+            Tippen zum Überspringen
+          </span>
+        </motion.div>
+      </div>
+    )
+  }
 
   // -- INTRO SCREEN --
   if (phase === 'intro') {
