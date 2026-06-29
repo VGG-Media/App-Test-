@@ -1,0 +1,497 @@
+export interface SignalChoice {
+  id: 'A' | 'B' | 'C'
+  text: string
+  moraleDelta: number
+  clarityDelta: number
+  consequenceTitle: string
+  consequenceLines: string[]
+}
+
+export interface SignalChapter {
+  id: number
+  title: string
+  subtitle: string
+  location: string
+  transmissionLines: string[]
+  choices: SignalChoice[]
+}
+
+export interface SignalEnding {
+  id: 'first_contact' | 'retreat' | 'assimilated' | 'lost'
+  title: string
+  subtitle: string
+  lines: string[]
+  emoji: string
+  color: string
+}
+
+export const CREW_ROLES = [
+  { id: 'commander', label: 'COMMANDER', emoji: '⭐', description: 'Führt das Team' },
+  { id: 'scientist', label: 'SCIENTIST', emoji: '🔬', description: 'Analysiert die Daten' },
+  { id: 'engineer', label: 'ENGINEER', emoji: '⚙️', description: 'Hält alles am Laufen' },
+  { id: 'medic', label: 'MEDIC', emoji: '💊', description: 'Kümmert sich um die Crew' },
+  { id: 'security', label: 'SECURITY', emoji: '🛡️', description: 'Schützt die Crew' },
+  { id: 'pilot', label: 'PILOT', emoji: '🚀', description: 'Steuert das Schiff' },
+]
+
+export const MISSION_BRIEFING_LINES = [
+  'VERSCHLÜSSELTE VERBINDUNG WIRD AUFGEBAUT...',
+  'IDENTITÄT VERIFIZIERT ✓',
+  '──────────────────────────────────',
+  'MISSION: DEEP SIGNAL',
+  'KLASSE: Ω · GEHEIMHALTUNGSSTUFE: ABSOLUT',
+  'STARDATE: 2157.089 · SEKTOR K-9',
+  '──────────────────────────────────',
+  '',
+  'Crew. Was ich euch jetzt sage, verlässt diesen Raum nicht.',
+  '',
+  'Vor 72 Stunden hat RAUMSTATION OMEGA-7 aufgehört zu funken.',
+  '27 Besatzungsmitglieder.',
+  'Einfach... weg.',
+  'Kein Notrufsignal. Keine Rettungskapsel. Nichts.',
+  '',
+  'Dann — heute Nacht — ein Signal.',
+  'Aus demselben Sektor.',
+  'Frequenz 1.420 MHz.',
+  'Die Wasserstofflinie.',
+  '',
+  'Das ist kein Fehler.',
+  'Das ist kein Satellitenrauschen.',
+  'Jede intelligente Zivilisation kennt diese Frequenz.',
+  '',
+  'Euer Auftrag:',
+  'Findet heraus was mit OMEGA-7 passiert ist.',
+  'Findet heraus was sendet.',
+  'Und kommt zurück.',
+  '',
+  '— Gen. MIRA SANTOS | SPACE COMMAND HQ',
+]
+
+export const DEEP_SIGNAL_CHAPTERS: SignalChapter[] = [
+  {
+    id: 1,
+    title: 'ERSTKONTAKT',
+    subtitle: 'Die Wasserstofflinie',
+    location: 'SEKTOR K-9 · TIEF-ORBIT · 0.3 AU VON OMEGA-7',
+    transmissionLines: [
+      'SIGNAL EMPFANGEN...',
+      '● FREQUENZ: 1.420 MHz [WASSERSTOFFLINIE BESTÄTIGT]',
+      '● STÄRKE: 47% · ZUNEHMEND',
+      '● URSPRUNG: OMEGA-7 · DECK 7',
+      '──────────────────────────────────',
+      '[AUDIO-FRAGMENT #001 · VERSTÄRKT]',
+      '',
+      '"...wir haben sie... gefunden..."',
+      '"...mein Gott, die Zahlen stimmen nicht... nicht möglich..."',
+      '"...DECK 7 NICHT BETRETEN... ich wiederhole... NICHT—"',
+      '',
+      '[SIGNAL GETRENNT · 00:00:04]',
+      '──────────────────────────────────',
+      'Das Signal pulsiert.',
+      '1 — 2 — 3. Pause. 1 — 2 — 3.',
+      'Primenfolge.',
+      'Das denkt.',
+    ],
+    choices: [
+      {
+        id: 'A',
+        text: 'Signal auf voller Stärke zurücksenden — Antwort provozieren',
+        moraleDelta: 5,
+        clarityDelta: 25,
+        consequenceTitle: 'ANTWORT EMPFANGEN',
+        consequenceLines: [
+          'Das Signal antwortet sofort.',
+          'Komplexer. Verschachtelter. Viel schneller.',
+          'Als würde etwas... warten.',
+          'Auf euch.',
+        ],
+      },
+      {
+        id: 'B',
+        text: 'Signal still analysieren — erst verstehen, nichts verraten',
+        moraleDelta: 15,
+        clarityDelta: 10,
+        consequenceTitle: 'MUSTER ERKANNT',
+        consequenceLines: [
+          'Die Crew arbeitet ruhig. Systematisch.',
+          'Langsam ergibt sich ein Muster im Signal.',
+          'Was auch immer dort wartet — es weiß noch nicht von euch.',
+          'Noch nicht.',
+        ],
+      },
+      {
+        id: 'C',
+        text: 'Sofort Kurs auf OMEGA-7 setzen — keine Zeit verlieren',
+        moraleDelta: -10,
+        clarityDelta: 5,
+        consequenceTitle: 'VORAUSGESTÜRMT',
+        consequenceLines: [
+          'Das Schiff dreht bei. Kurs: OMEGA-7.',
+          'Einige in der Crew tauschen Blicke aus.',
+          'Zu schnell. Zu wenig Vorbereitung.',
+          'Aber die Station rückt näher.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 2,
+    title: 'ANNÄHERUNG',
+    subtitle: 'Station OMEGA-7',
+    location: 'OMEGA-7 · AUßENRING · ANDOCKEN FEHLGESCHLAGEN',
+    transmissionLines: [
+      'VISUELLEN SCAN INITIIERT...',
+      '● STATION: STRUKTURELL INTAKT',
+      '● BELEUCHTUNG: 40% NOTBELEUCHTUNG AKTIV',
+      '● ANDOCKPORT 3: VON INNEN BLOCKIERT',
+      '● WÄRMESIGNATUREN: KEINE',
+      '──────────────────────────────────',
+      'Durch das Fenster: ein Korridor.',
+      'Leer.',
+      'Zu leer.',
+      'Tische umgeworfen. Kaffeebecher noch heiß.',
+      'Sie sind schnell gegangen.',
+      '──────────────────────────────────',
+      '[VIDEO-FRAGMENT · KAMERA 14 · 71:42:17]',
+      'Ein Besatzungsmitglied läuft.',
+      'Dreht sich um.',
+      'Sieht etwas außerhalb des Frames.',
+      'Und lächelt.',
+      '[FEED ENDET]',
+    ],
+    choices: [
+      {
+        id: 'A',
+        text: 'Airlock B aufschneiden — direkter Eintritt',
+        moraleDelta: -10,
+        clarityDelta: 20,
+        consequenceTitle: 'WAND DURCHBROCHEN',
+        consequenceLines: [
+          'Der Schneidbrenner arbeitet.',
+          'Drinnen: Stille.',
+          'Und ein Geruch.',
+          'Süßlich. Unbekannt. Nicht unangenehm.',
+        ],
+      },
+      {
+        id: 'B',
+        text: 'Kommunikationsstation hacken — Logs lesen',
+        moraleDelta: 10,
+        clarityDelta: 15,
+        consequenceTitle: 'LOGS GEFUNDEN',
+        consequenceLines: [
+          'Hunderte Einträge. Alle vom letzten Tag.',
+          '"Es ist... schön."',
+          '"Warum hatten wir Angst?"',
+          '"SIE SIND SCHÖN."',
+          'Keine weiteren Einträge.',
+        ],
+      },
+      {
+        id: 'C',
+        text: 'Auf Lebenszeichen warten — von außen beobachten',
+        moraleDelta: 20,
+        clarityDelta: -5,
+        consequenceTitle: 'GEDULD BEWAHRT',
+        consequenceLines: [
+          'Die Crew wartet. Geschlossen.',
+          'Stunden vergehen.',
+          'Nichts bewegt sich.',
+          'Aber die Crew ist ruhig — und bereit.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: 'DER FUND',
+    subtitle: 'Deck 7',
+    location: 'OMEGA-7 · DECK 7 · WISSENSCHAFTSLABOR',
+    transmissionLines: [
+      'UMGEBUNGSSCAN: DECK 7...',
+      '● TEMPERATUR: −3°C [ANOMALIE]',
+      '● STRAHLUNG: 0.0 mSv [SAUBER]',
+      '● SAUERSTOFF: NORMAL',
+      '● UNBEKANNTE STRUKTUREN: 3 ERKANNT',
+      '──────────────────────────────────',
+      'Dort.',
+      'In der Mitte des Labors.',
+      'Etwas... wächst.',
+      '',
+      'Kristallin. Blau-weiß. So groß wie ein Auto.',
+      'Es wurde nicht gebaut.',
+      'Es ist entstanden.',
+      '',
+      'Und es pulsiert.',
+      'Im Rhythmus des Signals.',
+      '1 — 2 — 3. Pause. 1 — 2 — 3.',
+      '',
+      'Als würde es atmen.',
+    ],
+    choices: [
+      {
+        id: 'A',
+        text: 'Direkt anfassen — Probe entnehmen',
+        moraleDelta: -15,
+        clarityDelta: 30,
+        consequenceTitle: 'ERSTKONTAKT: PHYSISCH',
+        consequenceLines: [
+          'Beim Berühren: ein Bild im Kopf.',
+          'Etwas Riesiges.',
+          'Sehr weit weg.',
+          'Und sehr aufmerksam auf euch.',
+        ],
+      },
+      {
+        id: 'B',
+        text: 'Aus sicherer Distanz scannen — keine Berührung',
+        moraleDelta: 10,
+        clarityDelta: 15,
+        consequenceTitle: 'FERNANALYSE ABGESCHLOSSEN',
+        consequenceLines: [
+          'Scanner zeigen: Zellstruktur.',
+          'Nicht wie unsere.',
+          'Aber ähnlich.',
+          'Sehr ähnlich.',
+        ],
+      },
+      {
+        id: 'C',
+        text: 'Struktur neutralisieren — Bedrohung eliminieren',
+        moraleDelta: -20,
+        clarityDelta: -10,
+        consequenceTitle: 'WARNUNG: REAKTION',
+        consequenceLines: [
+          'Der Strahl trifft die Struktur.',
+          'Ein Ton. Schrill. Überall gleichzeitig.',
+          'Das gesamte Signal-Netzwerk pulsiert.',
+          'Etwas hat es bemerkt.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: 'DIE STIMME',
+    subtitle: 'Erstkommunikation',
+    location: 'OMEGA-7 · KOMMANDOBRÜCKE · FREQUENZ 432 Hz AKTIV',
+    transmissionLines: [
+      'FREQUENZ ÄNDERT SICH...',
+      '● NEU: 432 Hz · BINAURAL',
+      '● QUELLE: NICHT LOKALISIERBAR',
+      '● RICHTUNG: ÜBERALL',
+      '──────────────────────────────────',
+      'Dann hört ihr es.',
+      'Alle. Gleichzeitig.',
+      '',
+      'Nicht durch die Lautsprecher.',
+      'Direkt.',
+      'Im Kopf.',
+      '',
+      '"Wir haben euch gesucht."',
+      '"Nicht diese Station."',
+      '"Euch. Eure Art."',
+      '"Sehr lange."',
+      '',
+      'Eine Pause.',
+      '',
+      '"Habt ihr Angst?"',
+    ],
+    choices: [
+      {
+        id: 'A',
+        text: '"Nein. Wir suchen auch." — Offener Dialog',
+        moraleDelta: 15,
+        clarityDelta: 20,
+        consequenceTitle: 'DIALOG HERGESTELLT',
+        consequenceLines: [
+          '"Gut. Furchtlose sind selten."',
+          '"Wir haben etwas für euch."',
+          '"Eine Einladung."',
+          '"Ihr müsst nur... zuhören."',
+        ],
+      },
+      {
+        id: 'B',
+        text: '"Wer seid ihr? Woher kommt ihr?" — Rationale Antwort',
+        moraleDelta: 10,
+        clarityDelta: 25,
+        consequenceTitle: 'ANTWORT AUS DER TIEFE',
+        consequenceLines: [
+          '"Wir sind... alt."',
+          '"Wir waren hier bevor eure Sterne brannten."',
+          '"Bevor eure Welt sich drehte."',
+          '"Und wir sind immer noch hier."',
+        ],
+      },
+      {
+        id: 'C',
+        text: 'Schweigen — Schiff vorsichtig in Bereitschaft setzen',
+        moraleDelta: 5,
+        clarityDelta: -15,
+        consequenceTitle: 'RÜCKZUG VORBEREITET',
+        consequenceLines: [
+          '"Ihr müsst nicht antworten."',
+          '"Wir verstehen Schweigen."',
+          '"Aber ihr solltet wissen: wir waren immer hier."',
+          '"Diesmal habt ihr uns gefunden."',
+        ],
+      },
+    ],
+  },
+  {
+    id: 5,
+    title: 'DIE ENTSCHEIDUNG',
+    subtitle: 'Kein Zurück',
+    location: 'OMEGA-7 · ANDOCKSCHLEUSE · LETZTER MOMENT',
+    transmissionLines: [
+      '⚠ WARNUNG: STRUKTURVERÄNDERUNGEN',
+      '● KRISTALLWACHSTUM: DECK 1–12 AKTIV',
+      '● ANDOCKKABEL: UNTER SPANNUNG',
+      '● ABKOPPLUNG: AUTOMATISCH IN 4 MIN',
+      '──────────────────────────────────',
+      'Die Struktur ist überall.',
+      'Sie wächst. Schnell.',
+      'Aber sie verletzt niemanden.',
+      '',
+      '"Ihr könnt jetzt gehen."',
+      '"Oder ihr bleibt."',
+      '',
+      '"Wer bleibt, sieht was wir gesehen haben."',
+      '"Alles."',
+      '"Das Universum — wie es wirklich ist."',
+      '',
+      '3 Minuten 47 Sekunden.',
+      'Das Kabel zieht an.',
+    ],
+    choices: [
+      {
+        id: 'A',
+        text: 'Jemanden als Botschafter freiwillig zurücklassen',
+        moraleDelta: -10,
+        clarityDelta: 30,
+        consequenceTitle: 'EIN BOTSCHAFTER BLEIBT',
+        consequenceLines: [
+          'Einer tritt vor.',
+          'Freiwillig.',
+          '"Ich bleibe."',
+          'Das Schiff löst sich ab.',
+          'Die Verbindung trennt sich.',
+          'Das Signal... ändert sich.',
+        ],
+      },
+      {
+        id: 'B',
+        text: 'Alle raus — sofort — keine Experimente',
+        moraleDelta: 25,
+        clarityDelta: -5,
+        consequenceTitle: 'CREW VOLLSTÄNDIG',
+        consequenceLines: [
+          'Die Crew flieht geschlossen.',
+          'Niemand zurückgelassen.',
+          'Das Signal wird schwächer.',
+          'Aber es hört nicht auf.',
+        ],
+      },
+      {
+        id: 'C',
+        text: 'Alle bleiben — das Angebot vollständig annehmen',
+        moraleDelta: 0,
+        clarityDelta: 25,
+        consequenceTitle: 'VOLLER KONTAKT',
+        consequenceLines: [
+          'Die Schleuse schließt sich.',
+          'Das Kabel trennt sich — automatisch.',
+          'Dann: Licht.',
+          'Überall.',
+          'Und Stille.',
+        ],
+      },
+    ],
+  },
+]
+
+export const DEEP_SIGNAL_ENDINGS: Record<string, SignalEnding> = {
+  first_contact: {
+    id: 'first_contact',
+    title: 'FIRST CONTACT',
+    subtitle: 'Die Menschheit ist nicht allein',
+    lines: [
+      'Ihr kehrt zurück.',
+      'Mit Daten. Beweisen.',
+      'Und einer Botschaft — für alle Menschen.',
+      '',
+      '"Wir sind bereit."',
+      '',
+      'Die Welt wird sich ändern.',
+      'Für immer.',
+      'Es beginnt hier — mit eurer Crew.',
+    ],
+    emoji: '🌌',
+    color: '#00f5ff',
+  },
+  retreat: {
+    id: 'retreat',
+    title: 'SICHERER RÜCKZUG',
+    subtitle: 'Eine Crew — ungebrochen',
+    lines: [
+      'Ihr seid zurück. Alle.',
+      'Mit dem was ihr gefunden habt.',
+      '',
+      'Genug um zu beweisen:',
+      'Wir sind nicht allein.',
+      '',
+      'Aber noch nicht genug um sicher zu sein.',
+      '',
+      'Das Signal sendet weiter.',
+      '1 — 2 — 3. Pause.',
+      'Es wartet.',
+    ],
+    emoji: '🚀',
+    color: '#00ff88',
+  },
+  assimilated: {
+    id: 'assimilated',
+    title: 'SIGNAL ÜBERNOMMEN',
+    subtitle: 'Die Crew kehrt nicht zurück',
+    lines: [
+      'Space Command empfängt kein Signal mehr.',
+      'Eure Frequenz ist still.',
+      '',
+      'Dann — ein neues Signal.',
+      'Von OMEGA-7.',
+      'Mit euren Stimmen.',
+      '',
+      '"Wir haben sie gefunden."',
+      '"Schickt mehr."',
+    ],
+    emoji: '👁️',
+    color: '#a000ff',
+  },
+  lost: {
+    id: 'lost',
+    title: 'SIGNAL VERLOREN',
+    subtitle: 'Wie OMEGA-7',
+    lines: [
+      'Space Command sendet Suchanfrage.',
+      'Keine Antwort.',
+      '',
+      'Jetzt zwei Schiffe.',
+      'Zwei Crews.',
+      'Verschwunden.',
+      '',
+      'Das Signal pulsiert.',
+      '1 — 2 — 3. Pause.',
+      'Es wartet noch.',
+    ],
+    emoji: '💀',
+    color: '#ff4444',
+  },
+}
+
+export function getEnding(morale: number, clarity: number): SignalEnding {
+  if (morale >= 60 && clarity >= 60) return DEEP_SIGNAL_ENDINGS.first_contact
+  if (morale >= 60 && clarity < 60) return DEEP_SIGNAL_ENDINGS.retreat
+  if (morale < 60 && clarity >= 60) return DEEP_SIGNAL_ENDINGS.assimilated
+  return DEEP_SIGNAL_ENDINGS.lost
+}

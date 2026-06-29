@@ -11,6 +11,7 @@ import HotTakes from './components/games/HotTakes'
 import Challenge from './components/games/Challenge'
 import Scoreboard from './components/Scoreboard'
 import GhostNetwork from './components/games/GhostNetwork'
+import DeepSignal from './components/games/DeepSignal'
 import ParticleBackground from './components/ui/ParticleBackground'
 
 const pageVariants = {
@@ -120,6 +121,8 @@ export default function App() {
         return <Scoreboard state={state} onNavigate={navigate} />
       case 'ghostnetwork':
         return <GhostNetwork {...sharedProps} />
+      case 'deepsignal':
+        return <DeepSignal {...sharedProps} />
       default:
         return <HomeScreen onNavigate={navigate} />
     }

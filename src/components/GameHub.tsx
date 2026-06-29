@@ -172,6 +172,65 @@ export default function GameHub({ state, currentPlayer, onNavigate }: Props) {
         </motion.div>
       )}
 
+      {/* Deep Signal – Special Feature Card */}
+      <motion.button
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.05 }}
+        whileHover={{ y: -4, scale: 1.01 }}
+        whileTap={{ scale: 0.97 }}
+        onClick={() => onNavigate('deepsignal')}
+        className="game-card w-full rounded-2xl text-left relative overflow-hidden mb-3"
+        style={{
+          background: 'radial-gradient(ellipse at 80% 50%, #020830 0%, #010108 80%)',
+          border: '1px solid rgba(0,191,255,0.25)',
+          boxShadow: '0 0 30px rgba(0,191,255,0.07)',
+        }}
+      >
+        <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
+          style={{ backgroundImage: 'repeating-linear-gradient(180deg, transparent, transparent 3px, rgba(0,191,255,0.4) 3px, rgba(0,191,255,0.4) 4px)' }}
+        />
+        <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, #0066ff, #00bfff)' }} />
+        <motion.div
+          className="absolute inset-0 opacity-5"
+          style={{ background: 'radial-gradient(circle at 80% 50%, #00bfff, transparent 60%)' }}
+          animate={{ opacity: [0.03, 0.07, 0.03] }}
+          transition={{ duration: 4, repeat: Infinity }}
+        />
+        <div className="relative z-10 p-4 flex items-center gap-4">
+          <motion.span
+            className="text-4xl"
+            animate={{ opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 2.5, repeat: Infinity }}
+          >
+            🛸
+          </motion.span>
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-0.5">
+              <p className="font-mono font-black text-base" style={{ color: '#00bfff' }}>
+                DEEP SIGNAL
+              </p>
+              <span className="font-mono text-xs px-1.5 py-0.5 rounded border"
+                style={{ color: '#00bfff', borderColor: 'rgba(0,191,255,0.4)', background: 'rgba(0,191,255,0.08)' }}>
+                NEU
+              </span>
+            </div>
+            <p className="font-mono text-xs" style={{ color: 'rgba(0,191,255,0.45)' }}>
+              Alien-Kontakt • Crew entscheidet • 5 Kapitel
+            </p>
+          </div>
+          <motion.div
+            className="flex flex-col gap-0.5"
+            animate={{ opacity: [0.3, 0.8, 0.3] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          >
+            {[1,2,3].map(i => (
+              <div key={i} className="h-0.5 rounded-full" style={{ width: `${[14,10,6][i-1]}px`, background: '#00bfff' }} />
+            ))}
+          </motion.div>
+        </div>
+      </motion.button>
+
       {/* Ghost Network – Special Feature Card */}
       <motion.button
         initial={{ opacity: 0, y: 20 }}

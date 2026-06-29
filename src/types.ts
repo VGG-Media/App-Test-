@@ -9,6 +9,7 @@ export type Screen =
   | 'challenge'
   | 'scoreboard'
   | 'ghostnetwork'
+  | 'deepsignal'
 
 export interface Player {
   id: string
